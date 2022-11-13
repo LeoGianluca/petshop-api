@@ -1,0 +1,23 @@
+default: &default
+  adapter: postgresql
+  encoding: utf8
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: localhost
+  username: postgres
+  password: 1234
+  timeout: 5000
+  port: 5432
+
+development:
+  <<: *default
+  database: petshop_api_development
+
+# test:
+#   <<: *default
+#   database: petshop_api_test
+
+# production:
+#   <<: *default
+#   database: petshop_api_production
+#   username: petshop_api
+#   password: <%= ENV["PETSHOP_API_DATABASE_PASSWORD"] %>
