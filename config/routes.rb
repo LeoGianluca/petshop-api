@@ -6,6 +6,8 @@ Rails.application.routes.draw do
       resources :species
       resources :breeds
       resources :pets
+      resources :states
+      resources :cities
     end
   end
 end

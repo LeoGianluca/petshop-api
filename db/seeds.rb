@@ -33,3 +33,15 @@ Pet.create!([
   { name: "Mewth", age: 8, species_id: 2, breed_id: 3 },
 ])
 
+# Create states
+State.create!([
+  { name: "Minas Gerais" },
+  { name: "São Paulo" }
+])
+
+# Create cities
+City.create!([
+  { name: "Belo Horizonte", state_id: 1 },
+  { name: "Capelinha", state_id: 1 }
+  { name: "São Paulo", state_id: 2 }
+])
