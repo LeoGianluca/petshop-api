@@ -41,7 +41,11 @@ class Api::V1::ProductsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
-      @product = Product.find(params[:id])
+      if Product.where(id: params[:id]).exists?
+        @product = Product.find(params[:id])
+      elsif 
+        render json: { error: "Product id not found" }, status: 404
+      end
     end
 
     # Only allow a list of trusted parameters through.
