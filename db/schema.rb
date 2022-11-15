@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_15_184742) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_15_210036) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -86,11 +86,28 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_184742) do
     t.index ["species_id"], name: "index_pets_on_species_id"
   end
 
+  create_table "phones", force: :cascade do |t|
+    t.string "number"
+    t.bigint "people_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["people_id"], name: "index_phones_on_people_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name"
     t.float "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "service_products", force: :cascade do |t|
+    t.bigint "service_id", null: false
+    t.bigint "product_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_service_products_on_product_id"
+    t.index ["service_id"], name: "index_service_products_on_service_id"
   end
 
   create_table "services", force: :cascade do |t|
@@ -99,6 +116,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_184742) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "pet_id", null: false
+    t.bigint "people_id", null: false
+    t.index ["people_id"], name: "index_services_on_people_id"
+    t.index ["pet_id"], name: "index_services_on_pet_id"
   end
 
   create_table "species", force: :cascade do |t|
@@ -120,4 +141,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_184742) do
   add_foreign_key "cities", "states"
   add_foreign_key "pets", "breeds"
   add_foreign_key "pets", "species"
+  add_foreign_key "phones", "people", column: "people_id"
+  add_foreign_key "service_products", "products"
+  add_foreign_key "service_products", "services"
+  add_foreign_key "services", "people", column: "people_id"
+  add_foreign_key "services", "pets"
 end
