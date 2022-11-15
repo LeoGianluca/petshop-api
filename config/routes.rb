@@ -8,6 +8,8 @@ Rails.application.routes.draw do
       resources :pets
       resources :states
       resources :cities
+      resources :services
+      resources :payments
     end
   end
 end
