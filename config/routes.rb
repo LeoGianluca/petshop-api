@@ -10,6 +10,8 @@ Rails.application.routes.draw do
       resources :cities
       resources :services
       resources :payments
+      resources :people
+      resources :addresses
     end
   end
 end
