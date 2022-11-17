@@ -61,8 +61,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_210036) do
     t.string "type"
     t.integer "status", default: 0
     t.json "config", default: {}
+    t.bigint "service_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["service_id"], name: "index_payments_on_service_id"
   end
 
   create_table "people", force: :cascade do |t|
@@ -88,10 +90,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_210036) do
 
   create_table "phones", force: :cascade do |t|
     t.string "number"
-    t.bigint "people_id", null: false
+    t.bigint "person_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["people_id"], name: "index_phones_on_people_id"
+    t.index ["person_id"], name: "index_phones_on_person_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -139,9 +141,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_210036) do
   add_foreign_key "category_products", "categories"
   add_foreign_key "category_products", "products"
   add_foreign_key "cities", "states"
+  add_foreign_key "payments", "services"
   add_foreign_key "pets", "breeds"
   add_foreign_key "pets", "species"
-  add_foreign_key "phones", "people", column: "people_id"
+  add_foreign_key "phones", "people"
   add_foreign_key "service_products", "products"
   add_foreign_key "service_products", "services"
   add_foreign_key "services", "people", column: "people_id"

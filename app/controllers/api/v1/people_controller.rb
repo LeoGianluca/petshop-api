@@ -3,9 +3,15 @@ class Api::V1::PeopleController < ApplicationController
 
   # GET /people
   def index
-    @people = Person.all
+    cliente_person = Person::ClientPerson.all.map do |category|
+      category.format_person()
+    end
 
-    render json: @people
+    employee_person = Person::EmployeePerson.all.map do |category|
+      category.format_person()
+    end
+
+    render json: employee_person + cliente_person
   end
 
   # GET /people/1
@@ -41,7 +47,11 @@ class Api::V1::PeopleController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_person
-      @person = Person.find(params[:id])
+      if Person.where(id: params[:id]).exists?
+        @person = Person.find(params[:id])
+      elsif
+        render json: { error: "Person id not found" }, status: 404
+      end
     end
 
     # Only allow a list of trusted parameters through.
