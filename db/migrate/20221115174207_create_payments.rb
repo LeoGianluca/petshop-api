@@ -4,6 +4,7 @@ class CreatePayments < ActiveRecord::Migration[7.0]
       t.string :type
       t.integer :status, default: 0
       t.json :config, default: {}
+      t.references :service, null: false, foreign_key: true
 
       t.timestamps
     end
