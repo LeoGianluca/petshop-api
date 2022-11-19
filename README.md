@@ -1,24 +1,21 @@
-# README
+# Pet Shop API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Trabalho desenvolvido para a disciplina de Aplicações Distribuídas. 
 
-Things you may want to cover:
+# Execução
 
-* Ruby version
+Primeiramente clone o projeto e no terminal execute os seguintes comandos:
 
-* System dependencies
+Executa a criação do banco de dados
+```Bash
+	rake db:create
+```
+Executa a inserção dos dados no arquivo **seed.rb**
+```Bash
+	rake db:seed
+```
+Inicia o serviço do Ruby on Rails
+```Bash
+	rails s
+```
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
