@@ -1,4 +1,4 @@
 class Address < ApplicationRecord
-  has_one :city
-  has_one :person, class_name: "Person::Base"
+  belongs_to :city
+  belongs_to :person, class_name: "Person::Base"
 end

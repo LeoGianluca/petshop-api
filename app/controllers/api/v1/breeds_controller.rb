@@ -18,7 +18,7 @@ class Api::V1::BreedsController < ApplicationController
     @breed = Breed.new(breed_params)
 
     if @breed.save
-      render json: @breed, status: :created, location: @breed
+      render json: @breed, status: :created
     else
       render json: @breed.errors, status: :unprocessable_entity
     end

@@ -18,7 +18,7 @@ class Api::V1::ServicesController < ApplicationController
     @service = Service.new(service_params)
 
     if @service.save
-      render json: @service, status: :created, location: @service
+      render json: @service, status: :created
     else
       render json: @service.errors, status: :unprocessable_entity
     end
@@ -46,6 +46,6 @@ class Api::V1::ServicesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def service_params
-      params.fetch(:service).require(:entry_date, :departure_date, :description, person_ids: [], :pet_id, product_ids: []) 
+      params.require(:service).permit(:entry_date, :departure_date, :description, :pet_id, person_ids: [], product_ids: []) 
     end
 end

@@ -18,7 +18,7 @@ class Api::V1::PhonesController < ApplicationController
     @phone = Phone.new(phone_params)
 
     if @phone.save
-      render json: @phone, status: :created, location: @phone
+      render json: @phone, status: :created
     else
       render json: @phone.errors, status: :unprocessable_entity
     end

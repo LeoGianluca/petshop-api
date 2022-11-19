@@ -1,5 +1,5 @@
 class City < ApplicationRecord
-  has_one :state
+  belongs_to :state
 
   validates_presence_of :name
 end

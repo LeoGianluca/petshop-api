@@ -16,15 +16,19 @@ class Api::V1::PeopleController < ApplicationController
 
   # GET /people/1
   def show
-    render json: @person
+    render json: @person.format_person_all_data()
   end
 
   # POST /people
   def create
-    @person = Person.new(person_params)
+    if params[:person][:type].present?
+      @person = Person::ClientPerson.new(person_params)
+    else
+      @person = Person::EmployeePerson.new(person_params)
+    end
 
     if @person.save
-      render json: @person, status: :created, location: @person
+      render json: @person, status: :created
     else
       render json: @person.errors, status: :unprocessable_entity
     end
@@ -47,8 +51,10 @@ class Api::V1::PeopleController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_person
-      if Person.where(id: params[:id]).exists?
-        @person = Person.find(params[:id])
+      if Person::ClientPerson.where(id: params[:id]).exists?
+        @person = Person::ClientPerson.find(params[:id])
+      elsif Person::EmployeePerson.where(id: params[:id]).exists?
+        @person = Person::EmployeePerson.find(params[:id])
       elsif
         render json: { error: "Person id not found" }, status: 404
       end
@@ -56,6 +62,6 @@ class Api::V1::PeopleController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def person_params
-      params.require(:person).permit(:name, :email, :document, :config, type: [ "Person::ClientPerson", "Person::EmployeePerson" ])
+      params.require(:person).permit(:name, :email, :document, :config)
     end
 end

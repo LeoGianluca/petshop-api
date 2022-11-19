@@ -18,7 +18,7 @@ class Api::V1::SpeciesController < ApplicationController
     @species = Species.new(species_params)
 
     if @species.save
-      render json: @species, status: :created, location: @species
+      render json: @species, status: :created
     else
       render json: @species.errors, status: :unprocessable_entity
     end

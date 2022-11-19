@@ -1,4 +1,4 @@
-class Api::V1ProvidersController < ApplicationController
+class Api::V1::ProvidersController < ApplicationController
   before_action :set_provider, only: %i[ show update destroy ]
 
   # GET /providers
@@ -18,7 +18,7 @@ class Api::V1ProvidersController < ApplicationController
     @provider = Provider.new(provider_params)
 
     if @provider.save
-      render json: @provider, status: :created, location: @provider
+      render json: @provider, status: :created
     else
       render json: @provider.errors, status: :unprocessable_entity
     end
