@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       resources :payments
       resources :people
       resources :addresses
+      resources :providers
     end
   end
 end

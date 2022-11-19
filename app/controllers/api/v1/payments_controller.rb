@@ -46,6 +46,6 @@ class Api::V1::PaymentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def payment_params
-      params.fetch(:payment).require(:type, :status, :config, type: [ "Payment::CreditPayment", "Payment::MoneyPayment" ])
+      params.fetch(:payment).require(:type, :status, :config, type: [ "Payment::CreditPayment", "Payment::MoneyPayment" ], :service_id)
     end
 end

@@ -5,12 +5,18 @@ Category.create!([
   { name: "Remédio" }
 ])
 
+# Create providers
+Provider.create!([
+  { name: "Pet Dist.LTDA", document: "12.345.678/0001-90" },
+  { name: "Universo Pet", document: "15.583.658/0001-85" }
+])
+
 # Create products
 Product.create!([
-  { name: "Ração", price: 100.0, category_ids: 1 },
-  { name: "Sache", price: 80.0, category_ids: 1 },
-  { name: "Shampoo", price: 50.0, category_ids: [ 2, 3 ] },
-  { name: "Vermifugo", price: 20.0, category_ids: 3 },
+  { name: "Ração", price: 100.0, category_ids: 1, provider_ids: [1] },
+  { name: "Sache", price: 80.0, category_ids: 1, provider_ids: [1]},
+  { name: "Shampoo", price: 50.0, category_ids: [ 2, 3 ], provider_ids: [1] },
+  { name: "Vermifugo", price: 20.0, category_ids: 3, provider_ids: [2] },
 ])
 
 # Create species
@@ -74,52 +80,48 @@ Phone.create!([
 # Create service
 Service.create!([
   {
-    entry_date: DateTime.strptime("02/09/2021 09:00", "%m/%d/%Y %H:%M"),
-    departure_date: DateTime.strptime("02/09/2021 12:00", "%m/%d/%Y %H:%M"),
+    entry_date: DateTime.parse("02/09/2021 09:00"),
+    departure_date: DateTime.parse("02/09/2021 12:00"),
     description: "Tosa",
     pet_id: 1,
-    person_ids: [1, 2]
+    person_ids: [1, 2],
   },
   {
-    entry_date: DateTime.strptime("03/09/2021 12:00", "%m/%d/%Y %H:%M"),
-    departure_date: DateTime.strptime("04/09/2021 12:00", "%m/%d/%Y %H:%M"),
+    entry_date: DateTime.parse("03/09/2021 12:00"),
+    departure_date: DateTime.parse("04/09/2021 12:00"),
     description: "Hotel",
     pet_id: 2,
-    person_ids: [1, 2]
+    person_ids: [1, 2],
+    product_ids: [1, 2, 4]
   },
   {
-    entry_date: DateTime.strptime("05/09/2021 16:00", "%m/%d/%Y %H:%M"),
-    departure_date: DateTime.strptime("05/09/2021 16:30", "%m/%d/%Y %H:%M"),
+    entry_date: DateTime.parse("05/09/2021 16:00"),
+    departure_date: DateTime.parse("05/09/2021 16:30"),
     description: "Vermifugação",
     pet_id: 3,
+    product_ids: [3],
     person_ids: [1, 2]
   }
-])
-
-# Create service products
-ServiceProduct.create!([
-  { service_id: 2, product_id: 1 },
-  { service_id: 2, product_id: 2 },
-  { service_id: 2, product_id: 4 },
-  { service_id: 3, product_id: 3 }
 ])
 
 # Create payments
   # Create money payments
 Payment::MoneyPayment.create!([
   {
+    service_id: 2,
     type: "Payment::MoneyPayment",
     status: 0,
     config: {
-      due_date: DateTime.strptime("20/10/2017", "%m/%d/%Y"), 
-      payment_day: DateTime.strptime("02/09/2021", "%m/%d/%Y")
+      due_date: DateTime.parse("20/10/2017"), 
+      payment_day: DateTime.parse("02/09/2021")
     }
   }
 ])
 
-  # Create card payments
+# Create card payments
 Payment::CreditPayment.create!([
   {
+    service_id: 1,
     type: "Payment::CreditPayment",
     status: 1,
     config: { installments: 6 }

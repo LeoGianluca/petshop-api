@@ -46,6 +46,6 @@ class Api::V1::ServicesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def service_params
-      params.fetch(:service).require(:entry_date, :departure_date, :description, :person_id, :pet_id, product_ids: []) 
+      params.fetch(:service).require(:entry_date, :departure_date, :description, person_ids: [], :pet_id, product_ids: []) 
     end
 end

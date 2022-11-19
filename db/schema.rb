@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_15_210036) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_19_190832) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,8 +24,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_210036) do
     t.bigint "person_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "provider_id", null: false
     t.index ["city_id"], name: "index_addresses_on_city_id"
     t.index ["person_id"], name: "index_addresses_on_person_id"
+    t.index ["provider_id"], name: "index_addresses_on_provider_id"
   end
 
   create_table "breeds", force: :cascade do |t|
@@ -40,13 +42,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_210036) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "category_products", force: :cascade do |t|
+  create_table "categories_products", id: false, force: :cascade do |t|
     t.bigint "category_id", null: false
     t.bigint "product_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_category_products_on_category_id"
-    t.index ["product_id"], name: "index_category_products_on_product_id"
+    t.index ["category_id", "product_id"], name: "index_categories_products_on_category_id_and_product_id"
   end
 
   create_table "cities", force: :cascade do |t|
@@ -77,6 +76,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_210036) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "people_services", id: false, force: :cascade do |t|
+    t.bigint "person_id", null: false
+    t.bigint "service_id", null: false
+    t.index ["person_id", "service_id"], name: "index_people_services_on_person_id_and_service_id"
+  end
+
   create_table "pets", force: :cascade do |t|
     t.string "name"
     t.integer "age"
@@ -86,6 +91,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_210036) do
     t.datetime "updated_at", null: false
     t.index ["breed_id"], name: "index_pets_on_breed_id"
     t.index ["species_id"], name: "index_pets_on_species_id"
+  end
+
+  create_table "pets_services", id: false, force: :cascade do |t|
+    t.bigint "service_id", null: false
+    t.bigint "pet_id", null: false
+    t.index ["service_id", "pet_id"], name: "index_pets_services_on_service_id_and_pet_id"
   end
 
   create_table "phones", force: :cascade do |t|
@@ -103,13 +114,23 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_210036) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "service_products", force: :cascade do |t|
+  create_table "products_providers", id: false, force: :cascade do |t|
+    t.bigint "provider_id", null: false
+    t.bigint "product_id", null: false
+    t.index ["provider_id", "product_id"], name: "index_products_providers_on_provider_id_and_product_id"
+  end
+
+  create_table "products_services", id: false, force: :cascade do |t|
     t.bigint "service_id", null: false
     t.bigint "product_id", null: false
+    t.index ["service_id", "product_id"], name: "index_products_services_on_service_id_and_product_id"
+  end
+
+  create_table "providers", force: :cascade do |t|
+    t.string "name"
+    t.string "document"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["product_id"], name: "index_service_products_on_product_id"
-    t.index ["service_id"], name: "index_service_products_on_service_id"
   end
 
   create_table "services", force: :cascade do |t|
@@ -118,9 +139,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_210036) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "pet_id", null: false
-    t.bigint "people_id", null: false
-    t.index ["people_id"], name: "index_services_on_people_id"
+    t.bigint "pet_id"
     t.index ["pet_id"], name: "index_services_on_pet_id"
   end
 
@@ -138,15 +157,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_210036) do
 
   add_foreign_key "addresses", "cities"
   add_foreign_key "addresses", "people"
-  add_foreign_key "category_products", "categories"
-  add_foreign_key "category_products", "products"
+  add_foreign_key "addresses", "providers"
   add_foreign_key "cities", "states"
   add_foreign_key "payments", "services"
   add_foreign_key "pets", "breeds"
   add_foreign_key "pets", "species"
   add_foreign_key "phones", "people"
-  add_foreign_key "service_products", "products"
-  add_foreign_key "service_products", "services"
-  add_foreign_key "services", "people", column: "people_id"
   add_foreign_key "services", "pets"
 end
